@@ -79,3 +79,43 @@ return redirect('/other link');
 // if you want to send message
 return view('/otherlink')->with('message','Created Successfully');
 
+// Get File
+Route::get('file',function(){
+    $path = file_get_contents(__DIR__.'/../resources/etc');
+});
+
+// Get file with slug
+Route::get('file/{$slug}',function($slug){
+    $path = file_get_contents(__DIR__.'/../resources/etc/{$slug}.html');
+});
+
+// Checking file if exist
+Route::get('file/{$slug}',function($slug){
+    $path = file_get_contents(__DIR__.'/../resources/etc/{$slug}.html');
+    if(! file_exists($path)){
+        // abort 404
+        // return redirect
+        return ('file does not exist');
+    }
+});
+
+
+// with cache
+Route::get('slug/{slug}',function($slug){
+    if(! file_exists($path = __DIR__ . "/../resources/posts/{$slug}")){
+        return 'none';
+    }
+
+    cache()->remember("slug/{$slug}",5,function() use ($path){
+        var_dump($path);
+        return file_get_contents($path);
+    });
+
+});
+
+
+
+
+
+
+
